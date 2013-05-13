@@ -6,6 +6,6 @@
   },
   "defaultLocale": "en",
   "private": true,
-  "location": ["ticket_sidebar", "new_ticket_sidebar"],
+  "location": <%= @app_locations.inspect %>,
   "frameworkVersion": "0.5"
 }

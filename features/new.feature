@@ -3,10 +3,10 @@ Feature: create a template for a new zendesk app
   Scenario: create a template for a new zendesk app by running 'zat new' command
     Given an app directory "tmp/aruba" exists
     When I run "zat new" command with the following details:
-      | author name  | John Citizen      |
-      | author email | john@example.com  |
-      | app name     | John Test App     |
-
+      | author name   | John Citizen     |
+      | author email  | john@example.com |
+      | app name      | John Test App    |
+      | app locations | ticket_sidebar   |
     Then the app file "tmp/aruba/manifest.json" is created with:
     """
 {
@@ -17,7 +17,7 @@ Feature: create a template for a new zendesk app
   },
   "defaultLocale": "en",
   "private": true,
-  "location": ["ticket_sidebar", "new_ticket_sidebar"],
+  "location": ["ticket_sidebar"],
   "frameworkVersion": "0.5"
 }
 """
@@ -58,3 +58,25 @@ Feature: create a template for a new zendesk app
   }
 }
 """
+
+  Scenario: create a template for a new zendesk app by running 'zat new' command and choosing the new_ticket_sidebar location
+    Given an app directory "tmp/aruba" exists
+    When I run "zat new" command with the following details:
+      | author name   | John Citizen                      |
+      | author email  | john@example.com                  |
+      | app name      | John Test App                     |
+      | app locations | ticket_sidebar,new_ticket_sidebar |
+    Then the app file "tmp/aruba/manifest.json" is created with:
+    """
+    {
+    "name": "John Test App",
+    "author": {
+    "name": "John Citizen",
+    "email": "john@example.com"
+    },
+    "defaultLocale": "en",
+    "private": true,
+    "location": ["ticket_sidebar", "new_ticket_sidebar"],
+    "frameworkVersion": "0.5"
+    }
+    """

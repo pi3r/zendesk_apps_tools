@@ -1,3 +1,5 @@
+require_relative '../../lib/zendesk_apps_tools/command'
+
 Given /^an app directory "(.*?)" exists$/ do |app_dir|
   @app_dir = app_dir
   FileUtils.rm_rf(@app_dir)
@@ -11,15 +13,26 @@ Given /^an app is created in directory "(.*?)"$/ do |app_dir|
       | author name  | John Citizen      |
       | author email | john@example.com  |
       | app name     | John Test App     |
+      | app locations | ticket_sidebar   |
   }
 end
 
 When /^I run "(.*?)" command with the following details:$/ do |cmd, table|
   IO.popen(cmd, "w+") do |pipe|
     key = table.rows_hash
+
     pipe.puts key["author name"]
     pipe.puts key["author email"]
     pipe.puts key["app name"]
+
+    ZendeskAppsTools::Command::APP_LOCATIONS.each do |location|
+      if key["app locations"][location]
+        pipe.puts 'y'
+      else
+        pipe.puts 'n'
+      end
+    end
+
     pipe.puts @app_dir
     pipe.close_write
     @output = pipe.readlines

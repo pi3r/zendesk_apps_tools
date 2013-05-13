@@ -27,6 +27,8 @@ module ZendeskAppsTools
       puts "Enter a name for this new app:"
       @app_name = get_value_from_stdin(/^\w.*$/, "Invalid app name, try again:")
 
+      @app_locations = locations_from_stdin
+
       puts "Enter a directory name to save the new app (will create the dir if it does not exist, default to current dir):"
       while @app_dir = $stdin.readline.chomp.strip do
         @app_dir = './' and break if @app_dir.empty?
@@ -177,6 +179,19 @@ module ZendeskAppsTools
         settings
       end
     end
+
+    APP_LOCATIONS = %W(ticket_sidebar new_ticket_sidebar)
+
+    def locations_from_stdin
+      APP_LOCATIONS.inject([]) do |locations, location|
+        puts "Do you want #{@app_name} to be visible at the #{location} location? (y/n):"
+        if get_value_from_stdin(/^[y|n]$/, 'Invalid answer, try again:') == 'y'
+          locations << location
+        end
+
+        locations
+      end
+    end
+
   end
 end
-
