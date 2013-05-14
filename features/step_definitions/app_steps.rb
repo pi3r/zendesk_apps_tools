@@ -1,4 +1,4 @@
-require_relative '../../lib/zendesk_apps_tools/command'
+require 'zendesk_apps_support'
 
 Given /^an app directory "(.*?)" exists$/ do |app_dir|
   @app_dir = app_dir
@@ -25,7 +25,7 @@ When /^I run "(.*?)" command with the following details:$/ do |cmd, table|
     pipe.puts key["author email"]
     pipe.puts key["app name"]
 
-    ZendeskAppsTools::Command::APP_LOCATIONS.each do |location|
+    ZendeskAppsSupport::Validations::Manifest::LOCATIONS_AVAILABLE.each do |location|
       if key["app locations"][location]
         pipe.puts 'y'
       else

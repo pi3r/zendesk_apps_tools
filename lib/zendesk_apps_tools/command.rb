@@ -180,10 +180,8 @@ module ZendeskAppsTools
       end
     end
 
-    APP_LOCATIONS = %W(ticket_sidebar new_ticket_sidebar)
-
     def locations_from_stdin
-      APP_LOCATIONS.inject([]) do |locations, location|
+      ZendeskAppsSupport::Validations::Manifest::LOCATIONS_AVAILABLE.inject([]) do |locations, location|
         puts "Do you want #{@app_name} to be visible at the #{location} location? (y/n):"
         if get_value_from_stdin(/^[y|n]$/, 'Invalid answer, try again:') == 'y'
           locations << location
